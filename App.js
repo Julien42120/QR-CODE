@@ -1,21 +1,53 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import History from './History';
+import Decode from './Decode';
+import Encode from './Encode';
+import { Entypo } from '@expo/vector-icons';
+import store from "./store/index";
+import { Provider } from "react-redux";
 
-export default function App() {
+const Tab = createBottomTabNavigator();
+
+export default function App(selectHistory) {
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Tab.Navigator>
+
+          <Tab.Screen
+            name="Decode"
+            component={Decode}
+            options={{
+              tabBarLabel: 'Decode',
+              tabBarIcon: ({ color }) => (
+                <Entypo name="arrow-with-circle-down" size={24} color="black" />
+              ),
+            }} />
+          <Tab.Screen
+            name="Encode"
+            component={Encode}
+            options={{
+              tabBarLabel: 'Encode',
+              tabBarIcon: ({ color }) => (
+                <Entypo name="arrow-with-circle-up" size={24} color="black" />
+              ),
+            }} />
+          <Tab.Screen
+            name="History"
+            component={History}
+            options={{
+              tabBarLabel: 'History',
+              tabBarIcon: ({ color }) => (
+                <Entypo name="open-book" size={24} color="black" />
+              ),
+            }} />
+
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
